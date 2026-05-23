@@ -204,8 +204,11 @@ function GroupStageView(props: {
   onScoreChange: (id: string, side: 'home' | 'away', val: string) => void
   onSave: (id: string) => void
 }) {
-  const groups = [...new Set(props.matches.map(m => m.group_name).filter(Boolean))].sort()
-
+  const groups = props.matches
+  .map((m) => m.group_name)
+  .filter((groupName): groupName is string => Boolean(groupName))
+  .filter((groupName, index, array) => array.indexOf(groupName) === index)
+  .sort()
   return (
     <div className="space-y-6">
       {groups.map(group => (
